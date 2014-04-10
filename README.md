@@ -1,0 +1,4 @@
+coindatabase
+============
+
+Database for coins.
