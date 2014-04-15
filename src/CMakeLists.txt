@@ -7,4 +7,4 @@ SET( QloseCombat_SRCS
 ADD_EXECUTABLE( ${PROJECT_NAME} ${QloseCombat_SRCS} )
 
 # Use the Widgets module from Qt 5.
-qt5_use_modules( ${PROJECT_NAME} Widgets )
+qt5_use_modules( ${PROJECT_NAME} Widgets Sql )

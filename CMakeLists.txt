@@ -20,4 +20,16 @@ The Qt5Widgets library not found!
 ---------------------------------")
 ENDIF( NOT Qt5Widgets_FOUND )
 
+# Find the QtSql library
+FIND_PACKAGE( Qt5Sql )
+
+IF( NOT Qt5Sql_FOUND )
+    MESSAGE( FATAL_ERROR
+"---------------------------------
+
+The Qt5Sql library not found!
+
+---------------------------------")
+ENDIF( NOT Qt5Sql_FOUND )
+
 ADD_SUBDIRECTORY( src )
