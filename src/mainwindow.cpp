@@ -20,7 +20,7 @@ void MainWindow::createMenu()
 {
     QAction *quitAction = new QAction(tr("Quit"), this);
 
-    connect(quitAction, SIGNAL( triggered() ), this, SLOT( close() ) );
+    connect(quitAction, SIGNAL( triggered() ), this, SLOT( exitSlot() ) );
 
     QMenu *fileMenu = menuBar()->addMenu("File");
     fileMenu->addAction( quitAction );
@@ -51,4 +51,11 @@ void MainWindow::checkLocalFiles()
     }else{
         qDebug() << "not open.";
     }
+}
+
+void MainWindow::exitSlot()
+{
+    localDb.close();
+
+    close();
 }

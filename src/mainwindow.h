@@ -6,6 +6,7 @@
 
 class MainWindow : public QMainWindow
 {
+    Q_OBJECT
 
     QSqlDatabase localDb;
 
@@ -19,6 +20,9 @@ private:
     void createMenu();
 
     void checkLocalFiles();
+
+private slots:
+    void exitSlot();
 
 };
 
