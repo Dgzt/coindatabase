@@ -22,6 +22,8 @@ private:
     void checkLocalFiles();
 
 private slots:
+    void countriesDialogSlot();
+
     void exitSlot();
 
 };

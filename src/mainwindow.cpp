@@ -6,6 +6,7 @@
 #include "QtSql/QSqlDatabase"
 #include "QtSql/QSqlQuery"
 #include "QtSql/QSqlError"
+#include "countriesdialog.h"
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,11 +21,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::createMenu()
 {
-    QAction *quitAction = new QAction(tr("Quit"), this);
+    QMenu *fileMenu = menuBar()->addMenu("File");
 
+    QAction *countriesAction = new QAction(tr("Countries"), this);
+    connect( countriesAction, SIGNAL( triggered() ), this, SLOT( countriesDialogSlot() ) );
+
+    QAction *quitAction = new QAction(tr("Quit"), this);
     connect(quitAction, SIGNAL( triggered() ), this, SLOT( exitSlot() ) );
 
-    QMenu *fileMenu = menuBar()->addMenu("File");
+    fileMenu->addAction( countriesAction );
     fileMenu->addAction( quitAction );
 }
 
@@ -73,6 +78,12 @@ void MainWindow::checkLocalFiles()
     }else{
         qDebug() << "not open.";
     }
+}
+
+void MainWindow::countriesDialogSlot()
+{
+    CountriesDialog countriesDialog;
+    countriesDialog.exec();
 }
 
 void MainWindow::exitSlot()
