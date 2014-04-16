@@ -63,7 +63,8 @@ void MainWindow::checkLocalFiles()
                                                     QString("id               INTEGER PRIMARY KEY,")+
                                                     QString("id_server        BIGINT,")+
                                                     QString("name             VARCHAR(64) NOT NULL,")+
-                                                    QString("modify_date      DATETIME NOT NULL")+
+                                                    QString("deleted          BOOLEAN NOT NULL CHECK (deleted IN (0,1)),")+
+                                                    QString("modified_date      DATETIME NOT NULL")+
                                                  QString(")"));
 
             if(ok){
