@@ -1,4 +1,5 @@
 SET( QloseCombat_SRCS
+    localdatabase.cpp
     countriesdialog.cpp
     mainwindow.cpp
     main.cpp

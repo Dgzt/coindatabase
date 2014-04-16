@@ -7,6 +7,7 @@
 #include "QtSql/QSqlQuery"
 #include "QtSql/QSqlError"
 #include "countriesdialog.h"
+#include "localdatabase.h"
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,6 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenu();
 
     checkLocalFiles();
+}
+
+MainWindow::~MainWindow()
+{
+    delete m_localDatabase;
 }
 
 void MainWindow::createMenu()
@@ -49,36 +55,20 @@ void MainWindow::checkLocalFiles()
         qDebug() << "yes";
     }
 
+    m_localDatabase = new LocalDatabase(homeDir.absolutePath() + "/.coins/local.db");
 
-    localDb = QSqlDatabase::addDatabase("QSQLITE");
-    localDb.setDatabaseName(homeDir.absolutePath() + "/.coins/local.db");
-
-    if( localDb.open() ){
-        qDebug() << "Open.";
-
-        if( !localDb.tables().contains("countries") ){
-
-            QSqlQuery createCountriesQuery(localDb);
-            bool ok = createCountriesQuery.exec( QString("CREATE TABLE countries (")+
-                                                    QString("id               INTEGER PRIMARY KEY,")+
-                                                    QString("id_server        BIGINT,")+
-                                                    QString("name             VARCHAR(64) NOT NULL,")+
-                                                    QString("deleted          BOOLEAN NOT NULL CHECK (deleted IN (0,1)),")+
-                                                    QString("modified_date      DATETIME NOT NULL")+
-                                                 QString(")"));
-
-            if(ok){
-                qDebug() << "Ok create countries table";
-            }else{
-                qDebug() << "Not ok create countries table";
-                qDebug() << createCountriesQuery.lastError().text();
+    if( m_localDatabase->open() ){
+        if( !m_localDatabase->haveCountriesTable() ){
+            if( m_localDatabase->createCountriesTable() ){
+                qDebug() << "Countries table created.";
             }
-
+        }else{
+            qDebug() << "Have countries table.";
         }
-
     }else{
-        qDebug() << "not open.";
+        qDebug() << "Database doesn't open.";
     }
+
 }
 
 void MainWindow::countriesDialogSlot()
@@ -89,7 +79,8 @@ void MainWindow::countriesDialogSlot()
 
 void MainWindow::exitSlot()
 {
-    localDb.close();
+    //localDb.close();
+    m_localDatabase->close();
 
     close();
 }

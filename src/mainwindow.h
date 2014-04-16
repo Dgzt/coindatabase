@@ -2,16 +2,20 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtSql/QSqlDatabase>
+//#include <QtSql/QSqlDatabase>
+
+class LocalDatabase;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    QSqlDatabase localDb;
+    //QSqlDatabase localDb;
+    LocalDatabase *m_localDatabase;
 
 public:
     MainWindow( QWidget *parent = 0 );
+    ~MainWindow();
 
 private:
     /*!
