@@ -73,7 +73,7 @@ void MainWindow::checkLocalFiles()
 
 void MainWindow::countriesDialogSlot()
 {
-    CountriesDialog countriesDialog;
+    CountriesDialog countriesDialog(m_localDatabase);
     countriesDialog.exec();
 }
 

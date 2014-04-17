@@ -3,6 +3,8 @@
 
 #include <QSqlDatabase>
 
+class QSqlQueryModel;
+
 class LocalDatabase
 {
     QSqlDatabase m_database;
@@ -40,6 +42,28 @@ public:
      * @return
      */
     bool createCountriesTable();
+
+    /*!
+     * Get the model of countries.
+     *
+     * @return The model of countries.
+     */
+    QSqlQueryModel* getCountriesModel();
+
+    /*!
+     * Get the max length of name of country.
+     *
+     * @return The max length of name of country.
+     */
+    int getMaxCountryNameLength();
+
+    /*!
+     * Insert a country.
+     *
+     * @param name The name of the country.
+     * @return The success of insert.
+     */
+    bool insertCountry( QString name );
 
 };
 
