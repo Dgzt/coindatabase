@@ -3,7 +3,7 @@
 
 #include <QSqlDatabase>
 
-class QSqlQueryModel;
+class QSqlTableModel;
 
 class LocalDatabase
 {
@@ -48,7 +48,7 @@ public:
      *
      * @return The model of countries.
      */
-    QSqlQueryModel* getCountriesModel();
+    QSqlTableModel* getCountriesModel();
 
     /*!
      * Get the max length of name of country.

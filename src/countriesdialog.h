@@ -4,7 +4,7 @@
 #include <QDialog>
 
 class LocalDatabase;
-class QSqlQueryModel;
+class QSqlTableModel;
 
 class CountriesDialog : public QDialog
 {
@@ -16,9 +16,9 @@ class CountriesDialog : public QDialog
     LocalDatabase *m_localDatabase;
 
     /*!
-     * The sql query model.
+     * The sql table model.
      */
-    QSqlQueryModel *tableModel;
+    QSqlTableModel *tableModel;
 
 public:
     /*!

@@ -2,7 +2,7 @@
 #include <QObject>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QSqlQueryModel>
+#include <QSqlTableModel>
 #include <QDateTime>
 #include "localdatabase.h"
 
@@ -39,13 +39,14 @@ bool LocalDatabase::createCountriesTable()
     return ret;
 }
 
-QSqlQueryModel* LocalDatabase::getCountriesModel()
+QSqlTableModel* LocalDatabase::getCountriesModel()
 {
-    QSqlQueryModel *queryModel = new QSqlQueryModel;
-    queryModel->setQuery( "SELECT name FROM countries WHERE deleted = 0", m_database );
-    queryModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Name"));
+    QSqlTableModel *model = new QSqlTableModel( 0, m_database );
+    model->setTable("countries");
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Name"));
+    model->select();
 
-    return queryModel;
+    return model;
 }
 
 int LocalDatabase::getMaxCountryNameLength()

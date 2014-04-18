@@ -2,7 +2,7 @@
 #include <QTableWidget>
 #include <QBoxLayout>
 #include <QDialogButtonBox>
-#include <QSqlQueryModel>
+#include <QSqlTableModel>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QSqlQuery>
@@ -20,6 +20,10 @@ CountriesDialog::CountriesDialog( LocalDatabase *localDatabase, QWidget *parent 
     QTableView *countriesView = new QTableView;
     countriesView->setModel(tableModel);
     countriesView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    countriesView->hideColumn(0); //Id
+    countriesView->hideColumn(1); //server_id
+    countriesView->hideColumn(3); //deleted
+    countriesView->hideColumn(4); //modified_date
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(countriesView);
@@ -43,7 +47,7 @@ void CountriesDialog::addSlot()
     if( addCountryDialog.exec() ){
         qDebug() << "Add:" << addCountryDialog.getName();
         if( m_localDatabase->insertCountry( addCountryDialog.getName() ) ){
-            tableModel->setQuery( tableModel->query().lastQuery() );
+            tableModel->select();
         }
     }
 }
