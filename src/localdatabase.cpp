@@ -43,6 +43,7 @@ QSqlTableModel* LocalDatabase::getCountriesModel()
 {
     QSqlTableModel *model = new QSqlTableModel( 0, m_database );
     model->setTable("countries");
+    model->setFilter("deleted = 0");
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Name"));
     model->select();
 
@@ -61,6 +62,23 @@ bool LocalDatabase::insertCountry( QString name )
 
     if( !ret ){
         qDebug() << "Cannot insert into countries table:" << query.lastError().text();
+    }
+
+    return ret;
+}
+
+bool LocalDatabase::removeCountry( int id )
+{
+    QSqlQuery query( m_database );
+
+    query.prepare("UPDATE countries SET deleted = 1 , modified_date = :current_date WHERE id = :id");
+    query.bindValue( ":id", id);
+    query.bindValue( ":current_date", QDateTime::currentDateTime().toString() );
+
+    bool ret = query.exec();
+
+    if( !ret ){
+        qDebug() << "Cannot update the countries table:" << query.lastError().text();
     }
 
     return ret;

@@ -5,6 +5,7 @@
 
 class LocalDatabase;
 class QSqlTableModel;
+class QTableView;
 
 class CountriesDialog : public QDialog
 {
@@ -20,6 +21,11 @@ class CountriesDialog : public QDialog
      */
     QSqlTableModel *tableModel;
 
+    /*!
+     * The countries table view.
+     */
+    QTableView *countriesView;
+
 public:
     /*!
      * Setup the dialog with widget components.
@@ -29,11 +35,23 @@ public:
      */
     CountriesDialog( LocalDatabase *localDatabase ,QWidget *parent = 0 );
 
-public slots:
+private slots:
+    /*!
+     * The popup menu for countries table.
+     *
+     * @param pos The position of the mouse.
+     */
+    void customMenuRequested( QPoint pos );
+
     /*!
      * Show the AddCountryDialog and add the given country.
      */
     void addSlot();
+
+    /*!
+     * Remove the selected rows.
+     */
+    void removeSlot();
 };
 
 #endif // COUNTRIESDIALOG_H

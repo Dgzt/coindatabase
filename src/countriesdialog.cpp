@@ -6,6 +6,9 @@
 #include <QHeaderView>
 #include <QPushButton>
 #include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlField>
+#include <QMenu>
 #include "localdatabase.h"
 #include "addcountrydialog.h"
 #include "countriesdialog.h"
@@ -17,7 +20,8 @@ CountriesDialog::CountriesDialog( LocalDatabase *localDatabase, QWidget *parent 
 
     tableModel = m_localDatabase->getCountriesModel();
 
-    QTableView *countriesView = new QTableView;
+    countriesView = new QTableView;
+    countriesView->setContextMenuPolicy( Qt::CustomContextMenu );
     countriesView->setModel(tableModel);
     countriesView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     countriesView->hideColumn(0); //Id
@@ -36,6 +40,19 @@ CountriesDialog::CountriesDialog( LocalDatabase *localDatabase, QWidget *parent 
     layout->addWidget(buttonBox);
 
     setLayout(layout);
+
+    connect( countriesView, SIGNAL( customContextMenuRequested( QPoint ) ), this, SLOT( customMenuRequested( QPoint ) ) );
+}
+
+void CountriesDialog::customMenuRequested( QPoint pos )
+{
+    QAction *removeAction = new QAction( tr( "Remove" ), this );
+    connect( removeAction, SIGNAL( triggered() ), this, SLOT( removeSlot() ) );
+
+    QMenu *menu = new QMenu( this );
+    menu->addAction( removeAction );
+
+    menu->popup( countriesView->viewport()->mapToGlobal( pos ) );
 }
 
 void CountriesDialog::addSlot()
@@ -50,4 +67,13 @@ void CountriesDialog::addSlot()
             tableModel->select();
         }
     }
+}
+
+void CountriesDialog::removeSlot()
+{
+    foreach( QModelIndex index, countriesView->selectionModel()->selectedIndexes() ){
+        m_localDatabase->removeCountry( tableModel->record( index.row() ).field("id").value().toInt() );
+    }
+
+    tableModel->select();
 }

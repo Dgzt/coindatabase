@@ -65,6 +65,14 @@ public:
      */
     bool insertCountry( QString name );
 
+    /*!
+     * Remove the country where id equal woth the given id.
+     *
+     * @param id The id.
+     * @return The cussess of insert.
+     */
+    bool removeCountry( int id );
+
 };
 
 #endif // LOCALDATABASE_H

@@ -35,7 +35,7 @@ public:
      */
     QString getName();
 
-public slots:
+private slots:
     /*!
      * The slot when call when click to the Ok button.
      */
