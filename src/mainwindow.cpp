@@ -65,6 +65,14 @@ void MainWindow::checkLocalFiles()
         }else{
             qDebug() << "Have countries table.";
         }
+
+        if( !m_localDatabase->haveCoinsTable() ){
+            if( m_localDatabase->createCoinsTable() ){
+                qDebug() << "Coins table created.";
+            }
+        }else{
+            qDebug() << "Have coins table.";
+        }
     }else{
         qDebug() << "Database doesn't open.";
     }
@@ -79,7 +87,6 @@ void MainWindow::countriesDialogSlot()
 
 void MainWindow::exitSlot()
 {
-    //localDb.close();
     m_localDatabase->close();
 
     close();

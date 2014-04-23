@@ -82,6 +82,20 @@ public:
      */
     bool updateCountry( int id, QString name );
 
+    /*!
+     * Check have 'cions' table.
+     *
+     * @return Have 'cions' table.
+     */
+    bool haveCoinsTable();
+
+    /*!
+     * Create 'cions' table.
+     *
+     * @return Success the table creating.
+     */
+    bool createCoinsTable();
+
 };
 
 #endif // LOCALDATABASE_H

@@ -101,3 +101,36 @@ bool LocalDatabase::updateCountry( int id, QString name )
 
     return ret;
 }
+
+bool LocalDatabase::haveCoinsTable()
+{
+    return m_database.tables().contains("coins");
+}
+
+bool LocalDatabase::createCoinsTable()
+{
+    QSqlQuery query( m_database );
+
+    query.prepare( QString("CREATE TABLE coins (" )+
+                    QString("id                 INTEGER PRIMARY KEY,")+
+                    QString("id_server          BIGINT,")+
+                    QString("name               VARCHAR(32),")+
+                    QString("country_id         BIGINT,")+
+                    QString("year               INT,")+
+                    QString("head_image_url     VARCHAR(128) NOT NULL,")+
+                    QString("head_image_path    VARCHAR(1024),")+
+                    QString("tail_image_url     VARCHAR(128) NOT NULL,")+
+                    QString("tail_image_path    VARCHAR(1024),")+
+                    QString("deleted            BOOLEAN NOT NULL CHECK (deleted IN (0,1)),")+
+                    QString("modified_date      DATETIME NOT NULL,")+
+                    QString("FOREIGN KEY (country_id) REFERENCES countries(id)")+
+                   QString(")"));
+
+    bool ret = query.exec();
+
+    if( !ret ){
+        qDebug() << "Cannot create coins table:" << query.lastError().text();
+    }
+
+    return ret;
+}
