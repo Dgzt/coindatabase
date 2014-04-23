@@ -69,9 +69,18 @@ public:
      * Remove the country where id equal woth the given id.
      *
      * @param id The id.
-     * @return The cussess of insert.
+     * @return The success of insert.
      */
     bool removeCountry( int id );
+
+    /*!
+     * Update the country with current date.
+     *
+     * @param id The id of modified country.
+     * @param name The new name of the country.
+     * @return The success of update.
+     */
+    bool updateCountry( int id, QString name );
 
 };
 

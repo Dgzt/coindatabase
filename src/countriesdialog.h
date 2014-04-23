@@ -6,6 +6,7 @@
 class LocalDatabase;
 class QSqlTableModel;
 class QTableView;
+class QSqlRecord;
 
 class CountriesDialog : public QDialog
 {
@@ -52,6 +53,14 @@ private slots:
      * Remove the selected rows.
      */
     void removeSlot();
+
+    /*!
+     * Call the update country in database before update the table.
+     *
+     * @param row The row of edited country.
+     * @param record The new record.
+     */
+    void beforeUpdateSlot( int row, QSqlRecord &record );
 };
 
 #endif // COUNTRIESDIALOG_H

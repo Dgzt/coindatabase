@@ -83,3 +83,21 @@ bool LocalDatabase::removeCountry( int id )
 
     return ret;
 }
+
+bool LocalDatabase::updateCountry( int id, QString name )
+{
+    QSqlQuery query( m_database );
+
+    query.prepare( "UPDATE countries SET name = ':name', modified_date = :current_date WHERE id = :id" );
+    query.bindValue( ":id", id );
+    query.bindValue( ":name", name );
+    query.bindValue( ":current_date", QDateTime::currentDateTime().toString() );
+
+    bool ret = query.exec();
+
+    if( !ret ){
+        qDebug() << "Cannot update the countries table:" << query.lastError().text();
+    }
+
+    return ret;
+}

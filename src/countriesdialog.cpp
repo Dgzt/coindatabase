@@ -19,6 +19,7 @@ CountriesDialog::CountriesDialog( LocalDatabase *localDatabase, QWidget *parent 
     m_localDatabase = localDatabase;
 
     tableModel = m_localDatabase->getCountriesModel();
+    connect( tableModel, SIGNAL(beforeUpdate( int, QSqlRecord& )), this, SLOT(beforeUpdateSlot(int,QSqlRecord&)));
 
     countriesView = new QTableView;
     countriesView->setContextMenuPolicy( Qt::CustomContextMenu );
@@ -76,4 +77,11 @@ void CountriesDialog::removeSlot()
     }
 
     tableModel->select();
+}
+
+void CountriesDialog::beforeUpdateSlot( int row, QSqlRecord &record )
+{
+    Q_UNUSED( row )
+
+    m_localDatabase->updateCountry( record.value("id").toInt(), record.value("name").toString() );
 }
