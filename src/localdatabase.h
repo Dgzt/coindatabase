@@ -96,6 +96,13 @@ public:
      */
     bool createCoinsTable();
 
+    /*!
+     * Get the model of the coins table.
+     *
+     * @return The model of cions table.
+     */
+    QSqlTableModel* getCoinsModel();
+
 };
 
 #endif // LOCALDATABASE_H

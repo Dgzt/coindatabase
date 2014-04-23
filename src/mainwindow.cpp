@@ -3,6 +3,10 @@
 #include "QMenu"
 #include "QMenuBar"
 #include "QDir"
+#include "QtWidgets/QVBoxLayout"
+#include "QtWidgets/QTableView"
+#include <QtWidgets/QHeaderView>
+#include <QtSql/QSqlTableModel>
 #include "QtSql/QSqlDatabase"
 #include "QtSql/QSqlQuery"
 #include "QtSql/QSqlError"
@@ -18,6 +22,26 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenu();
 
     checkLocalFiles();
+
+    QTableView *coinsView = new QTableView;
+    coinsView->setModel( m_localDatabase->getCoinsModel() );
+    coinsView->hideColumn(0); //id
+    coinsView->hideColumn(1); //id_server
+    coinsView->hideColumn(5); //head_image_url
+    coinsView->hideColumn(6); //head_image_path
+    coinsView->hideColumn(7); //tail_image_url
+    coinsView->hideColumn(8); //tail_image_path
+    coinsView->hideColumn(9); //deleted
+    coinsView->hideColumn(10); //modified_date
+    coinsView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget( coinsView );
+
+    QWidget *centralWidget = new QWidget;
+    centralWidget->setLayout( layout );
+
+    setCentralWidget( centralWidget );
 }
 
 MainWindow::~MainWindow()

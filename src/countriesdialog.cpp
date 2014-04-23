@@ -1,5 +1,5 @@
 #include <QDebug>
-#include <QTableWidget>
+#include <QTableView>
 #include <QBoxLayout>
 #include <QDialogButtonBox>
 #include <QSqlTableModel>
@@ -24,11 +24,11 @@ CountriesDialog::CountriesDialog( LocalDatabase *localDatabase, QWidget *parent 
     countriesView = new QTableView;
     countriesView->setContextMenuPolicy( Qt::CustomContextMenu );
     countriesView->setModel(tableModel);
-    countriesView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     countriesView->hideColumn(0); //Id
     countriesView->hideColumn(1); //server_id
     countriesView->hideColumn(3); //deleted
     countriesView->hideColumn(4); //modified_date
+    countriesView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(countriesView);

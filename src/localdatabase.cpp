@@ -134,3 +134,16 @@ bool LocalDatabase::createCoinsTable()
 
     return ret;
 }
+
+QSqlTableModel* LocalDatabase::getCoinsModel()
+{
+    QSqlTableModel *model = new QSqlTableModel( 0, m_database );
+    model->setTable("coins");
+    model->setFilter("deleted = 0");
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Name"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Country"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Year"));
+    model->select();
+
+    return model;
+}
