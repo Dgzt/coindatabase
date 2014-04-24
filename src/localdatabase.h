@@ -1,7 +1,9 @@
 #ifndef LOCALDATABASE_H
 #define LOCALDATABASE_H
 
+#include <QtCore/QPair>
 #include <QSqlDatabase>
+#include <QtCore/QString>
 
 class QSqlTableModel;
 
@@ -10,6 +12,12 @@ class LocalDatabase
     QSqlDatabase m_database;
 
 public:
+    static const QString EMPTY_NAME;
+
+    static const int EMPTY_COUNTRY_ID = -1;
+
+    static const int EMPTY_YEAR = 10000000;
+
     /*!
      * Setup the local database.
      *
@@ -102,6 +110,10 @@ public:
      * @return The model of cions table.
      */
     QSqlTableModel* getCoinsModel();
+
+    QList<QPair<int,QString> > getCountryList();
+
+    bool insertCoin( QString headImagePath, QString tailImagePath, QString name = EMPTY_NAME, int countryId = EMPTY_COUNTRY_ID, int year = EMPTY_YEAR );
 
 };
 

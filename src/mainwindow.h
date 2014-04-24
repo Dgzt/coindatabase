@@ -5,13 +5,15 @@
 //#include <QtSql/QSqlDatabase>
 
 class LocalDatabase;
+class QSqlTableModel;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    //QSqlDatabase localDb;
     LocalDatabase *m_localDatabase;
+
+    QSqlTableModel *coinsModel;
 
 public:
     MainWindow( QWidget *parent = 0 );
@@ -29,6 +31,8 @@ private slots:
     void countriesDialogSlot();
 
     void exitSlot();
+
+    void addCoinSlot();
 
 };
 

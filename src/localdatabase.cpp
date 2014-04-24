@@ -1,10 +1,14 @@
-#include <QDebug>
+#include <QtCore/QDebug>
+#include <QtCore/QFile>
 #include <QObject>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlTableModel>
 #include <QDateTime>
+#include <QtSql/QSqlResult>
 #include "localdatabase.h"
+
+const QString LocalDatabase::EMPTY_NAME = "";
 
 const QString DATABASE_DRIVER = "QSQLITE";
 
@@ -117,10 +121,10 @@ bool LocalDatabase::createCoinsTable()
                     QString("name               VARCHAR(32),")+
                     QString("country_id         BIGINT,")+
                     QString("year               INT,")+
-                    QString("head_image_url     VARCHAR(128) NOT NULL,")+
-                    QString("head_image_path    VARCHAR(1024),")+
-                    QString("tail_image_url     VARCHAR(128) NOT NULL,")+
-                    QString("tail_image_path    VARCHAR(1024),")+
+                    QString("head_image_url     VARCHAR(128),")+
+                    QString("head_image         BLOB NOT NULL,")+
+                    QString("tail_image_url     VARCHAR(128),")+
+                    QString("tail_image         BLOB NOT NULL,")+
                     QString("deleted            BOOLEAN NOT NULL CHECK (deleted IN (0,1)),")+
                     QString("modified_date      DATETIME NOT NULL,")+
                     QString("FOREIGN KEY (country_id) REFERENCES countries(id)")+
@@ -146,4 +150,86 @@ QSqlTableModel* LocalDatabase::getCoinsModel()
     model->select();
 
     return model;
+}
+
+QList<QPair<int,QString> > LocalDatabase::getCountryList()
+{
+    QSqlQuery query( m_database );
+
+    query.exec( "SELECT id,name FROM countries WHERE deleted = 0" );
+
+    QList<QPair<int,QString> > countryList;
+
+    while( query.next() ){
+        QPair<int,QString> pair;
+        pair.first = query.value("id").toInt();
+        pair.second = query.value("name").toString();
+        countryList.append( pair );
+    }
+
+    return countryList;
+}
+
+bool LocalDatabase::insertCoin( QString headImagePath, QString tailImagePath, QString name, int countryId, int year )
+{
+    QString queryString = "INSERT INTO coins(";
+
+    if( name != EMPTY_NAME ){
+        queryString += "name,";
+    }
+    if( countryId != EMPTY_COUNTRY_ID ){
+        queryString += "country_id,";
+    }
+    if( year != EMPTY_YEAR ){
+        queryString += "year,";
+    }
+
+    queryString += "head_image,tail_image,deleted,modified_date) values(";
+
+    if( name != EMPTY_NAME ){
+        queryString += ":name,";
+    }
+    if( countryId != EMPTY_COUNTRY_ID ){
+        queryString += ":countryId,";
+    }
+    if( year != EMPTY_YEAR ){
+        queryString += ":year,";
+    }
+
+    queryString += ":headImage,:tailImage,:deleted,:modifiedDate)";
+    qDebug() << queryString;
+
+    QFile headFile(headImagePath);
+    if( !headFile.open( QIODevice::ReadOnly ) ) return false;
+    QByteArray headByteArray = headFile.readAll();
+    headFile.close();
+
+    QFile tailFile(tailImagePath);
+    if( !tailFile.open( QIODevice::ReadOnly ) ) return false;
+    QByteArray tailByteArray = tailFile.readAll();
+    tailFile.close();
+
+    QSqlQuery query( m_database );
+    query.prepare( queryString );
+    if( name != EMPTY_NAME ){
+        query.bindValue( ":name", name );
+    }
+    if( countryId != EMPTY_COUNTRY_ID ){
+        query.bindValue( ":countryId", countryId );
+    }
+    if( year != EMPTY_YEAR ){
+        query.bindValue( ":year", year );
+    }
+
+    query.bindValue( ":headImage", headByteArray );
+    query.bindValue( ":tailImage", tailByteArray );
+    query.bindValue( ":deleted", 0 );
+    query.bindValue( ":modifiedDate", QDateTime::currentDateTime().toString() );
+
+    bool ret = query.exec();
+
+    if( !ret ){
+        qDebug() << "Cannot insert to coins table:" << query.lastError().text();
+    }
+    return ret;
 }

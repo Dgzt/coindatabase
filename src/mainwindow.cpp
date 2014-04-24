@@ -6,10 +6,13 @@
 #include "QtWidgets/QVBoxLayout"
 #include "QtWidgets/QTableView"
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QPushButton>
 #include <QtSql/QSqlTableModel>
 #include "QtSql/QSqlDatabase"
 #include "QtSql/QSqlQuery"
 #include "QtSql/QSqlError"
+#include "addcoindialog.h"
 #include "countriesdialog.h"
 #include "localdatabase.h"
 #include "mainwindow.h"
@@ -23,8 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     checkLocalFiles();
 
+    coinsModel = m_localDatabase->getCoinsModel();
+
     QTableView *coinsView = new QTableView;
-    coinsView->setModel( m_localDatabase->getCoinsModel() );
+    coinsView->setModel( coinsModel );
     coinsView->hideColumn(0); //id
     coinsView->hideColumn(1); //id_server
     coinsView->hideColumn(5); //head_image_url
@@ -35,8 +40,15 @@ MainWindow::MainWindow(QWidget *parent) :
     coinsView->hideColumn(10); //modified_date
     coinsView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    QPushButton *addButton = new QPushButton( tr( "Add" ) );
+    connect( addButton, SIGNAL( clicked() ), this, SLOT( addCoinSlot() ) );
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox;
+    buttonBox->addButton( addButton, QDialogButtonBox::ActionRole );
+
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget( coinsView );
+    layout->addWidget( buttonBox );
 
     QWidget *centralWidget = new QWidget;
     centralWidget->setLayout( layout );
@@ -114,4 +126,32 @@ void MainWindow::exitSlot()
     m_localDatabase->close();
 
     close();
+}
+
+void MainWindow::addCoinSlot()
+{
+    AddCoinDialog dialog( m_localDatabase->getCountryList() );
+
+    if( dialog.exec() ){
+        //Name
+        QString name = LocalDatabase::EMPTY_NAME;
+        if( !dialog.getName().isEmpty() ){
+            name = dialog.getName();
+        }
+
+        //Country id
+        int countryId = LocalDatabase::EMPTY_COUNTRY_ID;
+        if( dialog.getCountryId() != AddCoinDialog::INVALID_COUNTRY_ID ){
+            countryId = dialog.getCountryId();
+        }
+
+        int year = LocalDatabase::EMPTY_YEAR;
+        if( dialog.getYear() != AddCoinDialog::INVALID_YEAR ){
+            year = dialog.getYear();
+        }
+
+        qDebug() << m_localDatabase->insertCoin( dialog.getHeadImagePath(), dialog.getTailImagePath(), name, countryId, year );
+
+        coinsModel->select();
+    }
 }
