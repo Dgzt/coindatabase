@@ -5,7 +5,7 @@
 //#include <QtSql/QSqlDatabase>
 
 class LocalDatabase;
-class QSqlTableModel;
+class QTableWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -13,8 +13,7 @@ class MainWindow : public QMainWindow
 
     LocalDatabase *m_localDatabase;
 
-    QSqlTableModel *coinsModel;
-
+    QTableWidget *coinsTable;
 public:
     MainWindow( QWidget *parent = 0 );
     ~MainWindow();

@@ -4,7 +4,7 @@
 #include "QMenuBar"
 #include "QDir"
 #include "QtWidgets/QVBoxLayout"
-#include "QtWidgets/QTableView"
+#include "QtWidgets/QTableWidget"
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QPushButton>
@@ -26,19 +26,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     checkLocalFiles();
 
-    coinsModel = m_localDatabase->getCoinsModel();
-
-    QTableView *coinsView = new QTableView;
-    coinsView->setModel( coinsModel );
-    coinsView->hideColumn(0); //id
-    coinsView->hideColumn(1); //id_server
-    coinsView->hideColumn(5); //head_image_url
-    coinsView->hideColumn(6); //head_image_path
-    coinsView->hideColumn(7); //tail_image_url
-    coinsView->hideColumn(8); //tail_image_path
-    coinsView->hideColumn(9); //deleted
-    coinsView->hideColumn(10); //modified_date
-    coinsView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    coinsTable = new QTableWidget;
+    coinsTable->setColumnCount( 4 );
+    coinsTable->setHorizontalHeaderLabels( QStringList() << "ID" << "Name" << "Country" << "Year" );
+    coinsTable->hideColumn( 0 );
+    m_localDatabase->loadCoinsTable( coinsTable );
+    coinsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QPushButton *addButton = new QPushButton( tr( "Add" ) );
     connect( addButton, SIGNAL( clicked() ), this, SLOT( addCoinSlot() ) );
@@ -47,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     buttonBox->addButton( addButton, QDialogButtonBox::ActionRole );
 
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget( coinsView );
+    layout->addWidget( coinsTable );
     layout->addWidget( buttonBox );
 
     QWidget *centralWidget = new QWidget;
@@ -58,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    m_localDatabase->close();
     delete m_localDatabase;
 }
 
@@ -152,6 +146,6 @@ void MainWindow::addCoinSlot()
 
         qDebug() << m_localDatabase->insertCoin( dialog.getHeadImagePath(), dialog.getTailImagePath(), name, countryId, year );
 
-        coinsModel->select();
+        //coinsModel->select();
     }
 }

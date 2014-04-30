@@ -6,6 +6,7 @@
 #include <QtCore/QString>
 
 class QSqlTableModel;
+class QTableWidget;
 
 class LocalDatabase
 {
@@ -105,11 +106,11 @@ public:
     bool createCoinsTable();
 
     /*!
-     * Get the model of the coins table.
+     * Load the coins information and insert into the given table.
      *
-     * @return The model of cions table.
+     * @param table The table.
      */
-    QSqlTableModel* getCoinsModel();
+    void loadCoinsTable( QTableWidget* table );
 
     QList<QPair<int,QString> > getCountryList();
 

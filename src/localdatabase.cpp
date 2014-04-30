@@ -1,6 +1,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QObject>
+#include <QtWidgets/QTableWidget>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlTableModel>
@@ -139,17 +140,36 @@ bool LocalDatabase::createCoinsTable()
     return ret;
 }
 
-QSqlTableModel* LocalDatabase::getCoinsModel()
+void LocalDatabase::loadCoinsTable( QTableWidget *table )
 {
-    QSqlTableModel *model = new QSqlTableModel( 0, m_database );
-    model->setTable("coins");
-    model->setFilter("deleted = 0");
-    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Name"));
-    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Country"));
-    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Year"));
-    model->select();
+    table->clearContents();
 
-    return model;
+    QSqlQuery query( m_database );
+
+    QString queryString;
+    queryString.append( "SELECT " );
+    queryString.append("   coins.id as coins_id, ");
+    queryString.append("   coins.name as coins_name, ");
+    queryString.append("   countries.name as countries_name, ");
+    queryString.append("   coins.year as coins_year ");
+    queryString.append("FROM coins LEFT JOIN countries ");
+    queryString.append("ON coins.country_id = countries.id");
+
+    bool ret = query.exec( queryString );
+
+    if( ret ){
+
+        while( query.next() ){
+            table->insertRow( table->rowCount() );
+            table->setItem( table->rowCount()-1, 0, new QTableWidgetItem( query.value("coins_id").toString() ) );
+            table->setItem( table->rowCount()-1, 1, new QTableWidgetItem( query.value("coins_name").toString() ) );
+            table->setItem( table->rowCount()-1, 2, new QTableWidgetItem( query.value("countries_name").toString() ) );
+            table->setItem( table->rowCount()-1, 3, new QTableWidgetItem( query.value("coins_year").toString() ) );
+        }
+
+    }else{
+        qDebug() << "Cannot sleect coins table:" << query.lastError().text();
+    }
 }
 
 QList<QPair<int,QString> > LocalDatabase::getCountryList()
