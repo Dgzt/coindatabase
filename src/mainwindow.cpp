@@ -146,6 +146,7 @@ void MainWindow::addCoinSlot()
 
         qDebug() << m_localDatabase->insertCoin( dialog.getHeadImagePath(), dialog.getTailImagePath(), name, countryId, year );
 
-        //coinsModel->select();
+        coinsTable->setRowCount( 0 );
+        m_localDatabase->loadCoinsTable( coinsTable );
     }
 }

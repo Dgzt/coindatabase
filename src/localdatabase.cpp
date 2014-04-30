@@ -142,8 +142,6 @@ bool LocalDatabase::createCoinsTable()
 
 void LocalDatabase::loadCoinsTable( QTableWidget *table )
 {
-    table->clearContents();
-
     QSqlQuery query( m_database );
 
     QString queryString;
