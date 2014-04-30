@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     checkLocalFiles();
 
     coinsTable = new QTableWidget;
+    coinsTable->setEditTriggers( QTableWidget::NoEditTriggers );
     coinsTable->setColumnCount( 4 );
     coinsTable->setHorizontalHeaderLabels( QStringList() << "ID" << "Name" << "Country" << "Year" );
     coinsTable->hideColumn( 0 );
