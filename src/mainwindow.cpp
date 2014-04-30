@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     coinsTable = new QTableWidget;
     coinsTable->setEditTriggers( QTableWidget::NoEditTriggers );
+    coinsTable->setSelectionMode( QTableWidget::SingleSelection );
+    coinsTable->setSelectionBehavior( QTableWidget::SelectRows );
     coinsTable->setColumnCount( 4 );
     coinsTable->setHorizontalHeaderLabels( QStringList() << "ID" << "Name" << "Country" << "Year" );
     coinsTable->hideColumn( 0 );
