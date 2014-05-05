@@ -142,6 +142,9 @@ bool LocalDatabase::createCoinsTable()
 
 void LocalDatabase::loadCoinsTable( QTableWidget *table )
 {
+    //Clear table
+    table->setRowCount( 0 );
+
     QSqlQuery query( m_database );
 
     QString queryString;
@@ -151,7 +154,8 @@ void LocalDatabase::loadCoinsTable( QTableWidget *table )
     queryString.append("   countries.name as countries_name, ");
     queryString.append("   coins.year as coins_year ");
     queryString.append("FROM coins LEFT JOIN countries ");
-    queryString.append("ON coins.country_id = countries.id");
+    queryString.append("ON coins.country_id = countries.id ");
+    queryString.append("WHERE coins.deleted = 0");
 
     bool ret = query.exec( queryString );
 
@@ -249,5 +253,22 @@ bool LocalDatabase::insertCoin( QString headImagePath, QString tailImagePath, QS
     if( !ret ){
         qDebug() << "Cannot insert to coins table:" << query.lastError().text();
     }
+    return ret;
+}
+
+bool LocalDatabase::removeCoin( int id )
+{
+    QSqlQuery query( m_database );
+
+    query.prepare( "UPDATE coins SET deleted = 1 , modified_date = :current_date WHERE id = :id" );
+    query.bindValue( ":id", id );
+    query.bindValue( ":current_date", QDateTime::currentDateTime().toString() );
+
+    bool ret = query.exec();
+
+    if( !ret ){
+        qDebug() << "Cannot update coins table:" << query.lastError().text();
+    }
+
     return ret;
 }

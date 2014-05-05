@@ -33,6 +33,18 @@ private slots:
 
     void addCoinSlot();
 
+    /*!
+     * Show the popup menu for selected rows.
+     *
+     * @param pos The position of mouse.
+     */
+    void customMenuRequested( QPoint pos );
+
+    /*!
+     * Remove the selected rows from the local database.
+     */
+    void removeSlot();
+
 };
 
 #endif // MAINWINDOW_H

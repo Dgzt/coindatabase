@@ -23,6 +23,7 @@ CountriesDialog::CountriesDialog( LocalDatabase *localDatabase, QWidget *parent 
 
     countriesView = new QTableView;
     countriesView->setContextMenuPolicy( Qt::CustomContextMenu );
+    countriesView->setSelectionBehavior( QTableView::SelectRows );
     countriesView->setModel(tableModel);
     countriesView->hideColumn(0); //Id
     countriesView->hideColumn(1); //server_id
@@ -72,7 +73,7 @@ void CountriesDialog::addSlot()
 
 void CountriesDialog::removeSlot()
 {
-    foreach( QModelIndex index, countriesView->selectionModel()->selectedIndexes() ){
+    foreach( QModelIndex index, countriesView->selectionModel()->selectedRows() ){
         m_localDatabase->removeCountry( tableModel->record( index.row() ).field("id").value().toInt() );
     }
 

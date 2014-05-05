@@ -116,6 +116,14 @@ public:
 
     bool insertCoin( QString headImagePath, QString tailImagePath, QString name = EMPTY_NAME, int countryId = EMPTY_COUNTRY_ID, int year = EMPTY_YEAR );
 
+    /*!
+     * Set delete = 1 to the coin and set the modified date to current date.
+     *
+     * @param id The id of coin.
+     * @return Success the table update.
+     */
+    bool removeCoin( int id );
+
 };
 
 #endif // LOCALDATABASE_H

@@ -27,14 +27,16 @@ MainWindow::MainWindow(QWidget *parent) :
     checkLocalFiles();
 
     coinsTable = new QTableWidget;
+    coinsTable->setContextMenuPolicy( Qt::CustomContextMenu );
     coinsTable->setEditTriggers( QTableWidget::NoEditTriggers );
     coinsTable->setSelectionMode( QTableWidget::SingleSelection );
     coinsTable->setSelectionBehavior( QTableWidget::SelectRows );
     coinsTable->setColumnCount( 4 );
     coinsTable->setHorizontalHeaderLabels( QStringList() << "ID" << "Name" << "Country" << "Year" );
-    coinsTable->hideColumn( 0 );
+    coinsTable->hideColumn( 0 ); //id
     m_localDatabase->loadCoinsTable( coinsTable );
     coinsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    connect( coinsTable, SIGNAL( customContextMenuRequested( QPoint ) ), this, SLOT( customMenuRequested( QPoint ) ) );
 
     QPushButton *addButton = new QPushButton( tr( "Add" ) );
     connect( addButton, SIGNAL( clicked() ), this, SLOT( addCoinSlot() ) );
@@ -149,7 +151,29 @@ void MainWindow::addCoinSlot()
 
         qDebug() << m_localDatabase->insertCoin( dialog.getHeadImagePath(), dialog.getTailImagePath(), name, countryId, year );
 
-        coinsTable->setRowCount( 0 );
         m_localDatabase->loadCoinsTable( coinsTable );
     }
+}
+
+void MainWindow::customMenuRequested( QPoint pos )
+{
+    qDebug() << "menu";
+
+    QAction *removeAction = new QAction( tr( "Remove" ), this );
+    connect( removeAction, SIGNAL( triggered() ), this, SLOT( removeSlot() ) );
+
+    QMenu *menu = new QMenu( this );
+    menu->addAction( removeAction );
+
+    menu->popup( coinsTable->viewport()->mapToGlobal( pos ) );
+}
+
+void MainWindow::removeSlot()
+{
+    foreach( QModelIndex index, coinsTable->selectionModel()->selectedRows() ){
+        qDebug() << "Remove:" << coinsTable->item( index.row(), 0 )->text().toInt();
+        m_localDatabase->removeCoin( coinsTable->item( index.row(), 0 )->text().toInt() );
+    }
+
+    m_localDatabase->loadCoinsTable( coinsTable );
 }
