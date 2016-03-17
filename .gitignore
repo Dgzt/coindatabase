@@ -1,0 +1,7 @@
+/.settings
+/.jshintrc
+/.npmignore
+/.project
+app/*js*
+node_modules/
+typings/
