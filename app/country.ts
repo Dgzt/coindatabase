@@ -1,3 +1,3 @@
 export interface Country {
-    name : number;
+    name : string;
 }
