@@ -3,6 +3,7 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 
 import { CoinsComponent } from './coins.component';
 import { CountriesComponent } from './countries.component';
+import { AddCountryComponent } from './add-country.component';
 
 @Component({
     selector: 'my-app',
@@ -14,17 +15,22 @@ import { CountriesComponent } from './countries.component';
 })
 
 @RouteConfig([
-  {
-    path: '/',
-    name: 'Coins',
-    component: CoinsComponent,
-    useAsDefault: true
-  },
-  {
-    path: '/countries',
-    name: 'Countries',
-    component: CountriesComponent
-  }
+    {
+        path: '/',
+        name: 'Coins',
+        component: CoinsComponent,
+        useAsDefault: true
+    },
+    {
+        path: '/countries',
+        name: 'Countries',
+        component: CountriesComponent
+    },
+    {
+        path: '/addcountry',
+        name: 'AddCountry',
+        component: AddCountryComponent
+    }
 ])
     
 export class AppComponent { }

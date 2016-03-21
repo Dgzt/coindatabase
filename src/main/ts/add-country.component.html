@@ -1,0 +1,9 @@
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+	<h1>New country</h1>
+	
+	<label>The country:</label>
+	<input type="text" [(ngModel)]="model.name"
+            ngControl="name"  #name="ngForm" />
+	
+	<button type="submit">Save</button>
+</form>
