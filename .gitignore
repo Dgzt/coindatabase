@@ -2,6 +2,9 @@
 /.jshintrc
 /.npmignore
 /.project
-app/*js*
-node_modules/
-typings/
+/.classpath
+/.tscache/
+/node_modules/
+/src/main/resources/public/app/
+/src/main/resources/public/node_modules/
+/target/
