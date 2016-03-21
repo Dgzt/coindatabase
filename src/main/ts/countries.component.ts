@@ -6,8 +6,7 @@ import { CountryService } from './country.service';
 
 @Component({
     selector: 'my-countries',
-    templateUrl: 'app/countries.component.html',
-    providers: [ CountryService ]
+    templateUrl: 'app/countries.component.html'
 })
 
 export class CountriesComponent implements OnInit {

@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 	            },
 	            {
 	            	expand: true, 
-	            	src: copySrcDir + 'rxjs/bundles/Rx.js',
+	            	src: copySrcDir + 'rxjs/**/*.js',
 	            	dest: copyDestDir
 	            },
 	            {
@@ -71,6 +71,11 @@ module.exports = function(grunt) {
 	            {
 	            	expand: true, 
 	            	src: copySrcDir + 'angular2/bundles/router.dev.js',
+	            	dest: copyDestDir
+	            },
+	            {
+	            	expand: true, 
+	            	src: copySrcDir + 'angular2/bundles/http.dev.js',
 	            	dest: copyDestDir
 	            }]
         	}

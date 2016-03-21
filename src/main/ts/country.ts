@@ -1,3 +1,6 @@
-export interface Country {
-    name : string;
+export class Country {
+    
+    constructor(
+        public name : string
+    ) {}
 }

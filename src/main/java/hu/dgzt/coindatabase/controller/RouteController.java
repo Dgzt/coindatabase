@@ -21,4 +21,5 @@ public class RouteController {
 	public String index() {
 		return "forward:/index.html";
 	}
+	
 }

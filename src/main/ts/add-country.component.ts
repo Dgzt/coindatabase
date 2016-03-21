@@ -1,6 +1,7 @@
 import { Component }    from 'angular2/core';
 import { NgForm }       from 'angular2/common';
 
+import { CountryService } from './country.service';
 import { Country }      from './country';
 
 @Component({
@@ -12,8 +13,11 @@ export class AddCountryComponent {
     
     model : Country = {name: ''};
     
+        constructor(
+        private _countryService : CountryService
+    ){ }
+    
     onSubmit() {
-        // TODO - Send the model to the server
-        console.log(this.model);
+        this._countryService.save(this.model).subscribe((res: Country) => this.model = res);
     }
 }
