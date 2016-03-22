@@ -1,11 +1,13 @@
 package hu.dgzt.coindatabase.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import hu.dgzt.coindatabase.model.Country;
+import hu.dgzt.coindatabase.service.CountryService;
 
 /**
  * Controller for {@link Country}
@@ -15,6 +17,9 @@ import hu.dgzt.coindatabase.model.Country;
 @RestController
 @RequestMapping("/api/country")
 public class CountryController {
+	
+	@Autowired
+	private CountryService countryService;
 
 	/**
 	 * Save the given {@link Country} and return with the saved country.
@@ -24,8 +29,6 @@ public class CountryController {
 	 */
 	@RequestMapping(path = "/save", method = RequestMethod.POST)
 	public Country save(final @RequestBody Country newCountry){
-		System.out.println("New: " + newCountry.getName());
-		
-		return newCountry;
+		return countryService.save(newCountry);
 	}
 }
