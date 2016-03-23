@@ -13,10 +13,6 @@ export class CountryService {
     
     constructor (private _http: Http) {}
     
-    getCountries() {
-        return Promise.resolve(COUNTRIES);
-    }
-    
     save(country : Country){
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -28,6 +24,17 @@ export class CountryService {
             )
             .map(res => <Country> res.json())
             .catch(this.handleError);
+    }
+    
+    /**
+     * Return with the all country.
+     */
+    getAll() : Observable<Country[]> {
+        return this._http.get(
+            'api/country/all'
+        )
+        .map(res => <Country[]> res.json())
+        .catch(this.handleError);
     }
     
     private handleError (error: Response) {

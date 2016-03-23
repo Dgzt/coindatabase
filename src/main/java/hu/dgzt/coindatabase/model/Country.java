@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * 
  * @author Dgzt
  */
-@Entity
+@Entity(name = "Country")
 @Table(name = "countries")
 public class Country {
 	

@@ -19,7 +19,7 @@ export class CountriesComponent implements OnInit {
     ){ }
     
     getCountries(){
-        this._countryService.getCountries().then( countries => this.countries = countries );
+        this._countryService.getAll().subscribe(countries => this.countries = countries);
     }
     
     ngOnInit(){

@@ -1,5 +1,7 @@
 package hu.dgzt.coindatabase.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +32,15 @@ public class CountryController {
 	@RequestMapping(path = "/save", method = RequestMethod.POST)
 	public Country save(final @RequestBody Country newCountry){
 		return countryService.save(newCountry);
+	}
+	
+	/**
+	 * Return with the all country.
+	 * 
+	 * @return The list of country.
+	 */
+	@RequestMapping(path = "/all", method = RequestMethod.GET)
+	public List<Country> findAll(){
+		return countryService.findAll();
 	}
 }

@@ -1,5 +1,7 @@
 package hu.dgzt.coindatabase.service;
 
+import java.util.List;
+
 import hu.dgzt.coindatabase.model.Country;
 
 /**
@@ -16,5 +18,10 @@ public interface CountryService {
 	 * @return The saved country.
 	 */
 	Country save(final Country country);
+	
+	/**
+	 * Return with the all country.
+	 */
+	List<Country> findAll();
 	
 }

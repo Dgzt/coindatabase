@@ -1,5 +1,7 @@
 package hu.dgzt.coindatabase.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,14 @@ public class CountryServiceImpl implements CountryService{
 	@Transactional(readOnly = false)
 	public Country save(final Country country) {
 		return countryRepository.save(country);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Country> findAll() {
+		return countryRepository.findAll();
 	}
 
 }
