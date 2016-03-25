@@ -1,8 +1,7 @@
 <h1>Countries</h1>
 
+<button (click)="gotoAddCountry()">Add country</button>
 <table>
-	<button (click)="gotoAddCountry()">Add country</button>
-
 	<tr *ngFor="#country of countries">
 		<td>{{country.name}}</td>
 	<tr>

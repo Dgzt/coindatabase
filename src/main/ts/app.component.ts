@@ -4,6 +4,7 @@ import {HTTP_PROVIDERS}                                     from 'angular2/http'
 
 import { CountryService } from './country.service';
 import { CoinsComponent } from './coins.component';
+import { AddCoinComponent } from './add-coin.component';
 import { CountriesComponent } from './countries.component';
 import { AddCountryComponent } from './add-country.component';
 
@@ -24,6 +25,11 @@ import { AddCountryComponent } from './add-country.component';
         name: 'Coins',
         component: CoinsComponent,
         useAsDefault: true
+    },
+    {
+        path: '/addcoin',
+        name: 'AddCoin',
+        component: AddCoinComponent
     },
     {
         path: '/countries',

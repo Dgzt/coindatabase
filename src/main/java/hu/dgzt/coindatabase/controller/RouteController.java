@@ -16,7 +16,8 @@ public class RouteController {
 	 */
 	@RequestMapping({
 		"/countries",
-		"/addcountry"
+		"/addcountry",
+		"/addcoin"
 	})
 	public String index() {
 		return "forward:/index.html";
